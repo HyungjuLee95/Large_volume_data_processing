@@ -166,7 +166,7 @@ public class PostBulkInsertTest {
 
 
 #해볼것 : 회원 등록 인증 ( Spring securities, auth)
-
+# 1-5 챕터 내용 정리 필요 
 
 
 
