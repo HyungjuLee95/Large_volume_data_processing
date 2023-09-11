@@ -118,7 +118,47 @@ Mysql이 Pk를 가지고 있는 이유는 Pk가 클러스터 인덱스이기 때
 
 ---
 
+## 그렇다면 최적화를 하지 않은 상태에서의 객체 생성 및 쿼리 생성 시간의 차이를 Test해보자.
+#### Bulk Data를 10,000,000건 넣을 때를 기준으로 생각을 해보자. 속도 측정은 Spring의 StopWatch 메서드를 사용하여 진행.
+#### EasyRandom을 이용하여 진행(https://github.com/j-easy/easy-random/wiki)
 
+# Test
+```
+@SpringBootTest
+public class PostBulkInsertTest {
+    @Autowired
+    private PostRepsitory postRepsitory;
+
+    @Test
+    public void bulkInsert(){
+        var easyRandom = PostFixtureFactory.get(3L,
+                LocalDate.of(2023, 9,3),
+                LocalDate.of(2023, 9,6)
+
+        );
+        var stopWatch = new StopWatch();
+        stopWatch.start();
+
+       var posts =  IntStream.range(0, 1000000)
+               .parallel()
+                .mapToObj(i->easyRandom.nextObject(Post.class) )
+                .toList();
+        stopWatch.stop();
+        System.out.println("객체 생성 시간 : " + stopWatch.getTotalTimeSeconds());
+
+        var queryStopwatch = new StopWatch();
+        queryStopwatch.start();
+
+        postRepsitory.bulkInsert(posts);
+        queryStopwatch.stop();
+
+        System.out.println("쿼리 생성 시간 : " + queryStopwatch.getTotalTimeSeconds());
+
+
+    }
+}
+
+```
 
 
 
