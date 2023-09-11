@@ -11,15 +11,17 @@ import org.springframework.util.StopWatch;
 import java.time.LocalDate;
 import java.util.stream.IntStream;
 
+
 @SpringBootTest
 public class PostBulkInsertTest {
     @Autowired
     private PostRepsitory postRepsitory;
-
+    // 어떻게 최적화를 할지 고민해보자.
+    // 해야할 것 : API 부화 테스트, 최적화를 어떻게 해야할지
     @Test
     public void bulkInsert(){
         var easyRandom = PostFixtureFactory.get(3L,
-                LocalDate.of(2023, 9,3),
+                LocalDate.of(2023, 8,3),
                 LocalDate.of(2023, 9,6)
 
         );
